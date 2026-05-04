@@ -5,11 +5,15 @@ import AddProduct from './pages/AddProduct'
 import ProductList from './pages/ProductList'
 import OrderPage from './pages/OrderPage'
 import Navbar from './components/Navbar'
+import Sidebar from './components/Sidebar'
 
 const App = () => {
   return (
     <div className='px-3 md:px-4'>
       <Navbar/>
+      <div className='flex '>
+        <Sidebar/>
+     
       <Routes>
         <Route path='/' element={<HomePage/>}/>
         <Route path='/add' element={<AddProduct/>}/>
@@ -17,6 +21,7 @@ const App = () => {
         <Route path='/orders' element={<OrderPage/>}/>
        
       </Routes>
+       </div>
     </div>
   )
 }
