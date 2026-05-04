@@ -17,6 +17,7 @@ connectCloudinary();
 const app = express();
 
 // 3. Global Middleware
+app.use(express.urlencoded())
 app.use(express.json());
 app.use(cors());
 

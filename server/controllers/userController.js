@@ -25,7 +25,6 @@ exports.userLogin = async (req, res) => {
       // 3. Return for wrong password
       return res.json({ success: false, message: "Invalid credentials" });
     }
-
   } catch (error) {
     console.error(error); // Log the error for your own debugging
     res.status(500).json({ success: false, message: "Server error" });
@@ -36,13 +35,16 @@ exports.userRegister = async (req, res) => {
     const { name, email, password } = req.body;
 
     // 1. Added await here
-    const exists = await UserModel.findOne({ email }); 
+    const exists = await UserModel.findOne({ email });
     if (exists) {
       return res.json({ success: false, message: "User already exists" });
     }
 
     if (password.length < 8) {
-      return res.json({ success: false, message: "Password must be at least 8 characters" });
+      return res.json({
+        success: false,
+        message: "Password must be at least 8 characters",
+      });
     }
 
     // 2. Corrected to bcrypt.hash
@@ -64,4 +66,17 @@ exports.userRegister = async (req, res) => {
     res.status(500).json({ success: false, message: "Registration failed" });
   }
 };
-exports.adminLogin = async (req, res) => {};
+exports.adminLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if ( email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD ) {
+      const token = jwt.sign( email + password, process.env.JWT_SECRET_KEY );
+      res.json({ success: true, token });
+    }else{
+      res.json({success:false,message:"Invalid credentials"})
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};

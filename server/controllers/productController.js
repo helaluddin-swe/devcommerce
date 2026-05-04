@@ -26,7 +26,7 @@ exports.addProduct =async (req, res) => {
       category,
       subcategory,
       price: Number(price),
-      sizes: JSON.parse(sizes),
+      sizes,
       bestseller: bestseller === "true",
       image: imageUrl,
       date: Date.now()
@@ -35,7 +35,7 @@ exports.addProduct =async (req, res) => {
     await newProduct.save();
    
     res.json({ success: true, message: "Product Added" });
-     res.json({})
+  
 
   } catch (error) {
     console.log(error);
@@ -44,6 +44,10 @@ exports.addProduct =async (req, res) => {
 };
 exports.listProducts = async (req, res) => {
   try {
+    const product=await ProductModel.find({})
+    res.json({success:true,product})
+   
+    
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
@@ -51,6 +55,9 @@ exports.listProducts = async (req, res) => {
 };
 exports.removeProduct = async (req, res) => {
   try {
+    
+    await ProductModel.findByIdAndDelete(req.body.id)
+    res.json({success:true,message:"Delelted product"})
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
@@ -58,6 +65,9 @@ exports.removeProduct = async (req, res) => {
 };
 exports.singleProduct = async (req, res) => {
   try {
+    const {productId}=req.body
+    const product=await ProductModel.findById(productId)
+    res.json({success:true,product})
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
@@ -65,6 +75,11 @@ exports.singleProduct = async (req, res) => {
 };
 exports.updateProduct = async (req, res) => {
   try {
+    const updatedProduct=await ProductModel.findByIdAndUpdate(req.params.id,req.body,{new:true})
+    if(!updatedProduct){
+      return res.json({success:false,message:"Product not found"})
+    }
+    res.json({success:true,updatedProduct})
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });

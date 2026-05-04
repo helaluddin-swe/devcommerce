@@ -3,5 +3,5 @@ const { userLogin, userRegister, adminLogin } = require("../controllers/userCont
 const userRouter=express.Router()
 userRouter.post('/login',userLogin)
 userRouter.post('/register',userRegister)
-userRouter.post("/admin-login",adminLogin)
+userRouter.post("/admin",adminLogin)
 module.exports=userRouter
