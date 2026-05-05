@@ -19,7 +19,7 @@ const app = express();
 // 3. Global Middleware
 app.use(express.urlencoded())
 app.use(express.json());
-app.use(cors());
+app.use(cors({origin:["http://localhost:5174"]}));
 
 // 4. Routes
 app.use("/api/user", userRouter);
